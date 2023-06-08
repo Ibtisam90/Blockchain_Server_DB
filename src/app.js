@@ -181,18 +181,19 @@ app.post('/registerFace', async (req, res) => {
         // });
   
         if (isMatch) {
+          
           console.log("Login successful");
-          res.json({ success: true, message: 'Login successful', candAccount: metamaskAccount });
+          res.json({ success: true, message: 'Login successful', candAccount: metamaskAccount, candidate });
         } else {
           console.log("Login failed");
           res.json({ success: false, message: 'Login failed, Face not matched any registered users' });
         }
       } else {
-        res.json({ success: false, error: 'Face not detected' });
+        res.json({ success: false, error: 'Face not detected', message: 'Face not detected' });
       }
     } catch (error) {
-      console.error('Error during face recognition:', error);
-      res.status(500).json({ success: false, error: 'Face recognition failed' });
+      console.log('Error during face recognition:', error);
+      res.status(500).json({ success: false, error: 'Face recognition failed', message: 'Face recognition failed' });
     }
   });
 
@@ -241,17 +242,18 @@ app.post('/registerFace', async (req, res) => {
   
         if (isMatch) {
           console.log("Login successful");
-          res.json({ success: true, message: 'Login successful', voterAccount: metamaskAccount });
+          res.json({ success: true, message: 'Login successful', voterAccount: metamaskAccount , voter});
         } else {
           console.log("Login failed");
           res.json({ success: false, message: 'Login failed, Face not matched any registered users' });
         }
       } else {
-        res.json({ success: false, error: 'Face not detected' });
+        console.log("Face not detected");
+        res.json({ success: false, error: 'Face not detected',message: 'Face not detected'  });
       }
     } catch (error) {
-      console.error('Error during face recognition:', error);
-      res.status(500).json({ success: false, error: 'Face recognition failed' });
+      console.log('Error during face recognition:', error);
+      res.status(500).json({ success: false, error: 'Face recognition failed', message: 'Face not detected' });
     }
   });
   
@@ -280,6 +282,31 @@ app.get('/api/electionName', function(req, res) {
         }
         res.send(final);
     })
+})
+
+
+
+app.get('/api/candList', function(req, res) {
+  var firstName = []
+  var description = []
+  var metamaskAccount = []
+  var party = []
+  var final = []
+  Candidate.find({}).then(eachOne => {
+      for (i = 0; i < eachOne.length; i++){
+        firstName[i] = eachOne[i].firstName ;
+        party[i] = eachOne[i].party;
+        metamaskAccount[i] = eachOne[i].metamaskAccount;
+        description[i] = eachOne[i].description;
+          final.push({
+              'firstName': eachOne[i].firstName,
+              'party': eachOne[i].party,
+              'metamaskAccount': eachOne[i].metamaskAccount,
+              'description': eachOne[i].description
+          })
+      }
+      res.send(final);
+  })
 })
 
 app.post('/api/electionName', async function(req, res) {

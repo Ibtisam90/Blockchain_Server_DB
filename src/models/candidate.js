@@ -27,6 +27,10 @@ const candidateSchema = new mongoose.Schema({
     type: [Number], // Alternatively, you can use Buffer for binary data
     required: true
   },
+  isCandidate: {
+    type: Boolean, // Alternatively, you can use Buffer for binary data
+    default: true
+  },
   registeredAt: {
     type: Date,
     default: Date.now

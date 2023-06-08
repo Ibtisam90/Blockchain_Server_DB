@@ -9,6 +9,10 @@ const voterSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isCandidate: {
+    type: Boolean, // Alternatively, you can use Buffer for binary data
+    default: false
+  },
  
   metamaskAccount: {
     type: String,
